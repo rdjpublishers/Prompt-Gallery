@@ -14,7 +14,7 @@
    has already defined the following globals (declared with `var` so they
    land on `window`):
      DATA, FAVS, CAT, SORT, QUERY, CURRENT_LB,
-     GH, SK, FK, GK, PASS,
+     GH, SK, FK, GK, ADMIN_HASH, checkPassword,
      ea, esc, uid,
      save, saveGH,
      renderGallery, renderSidebar, renderCatTabs, renderFavs.
@@ -349,9 +349,10 @@ function renderLockScreen(){
     + '</div></div>';
 }
 
-function checkPass(){
+async function checkPass(){
   const v = document.getElementById('al-pw').value;
-  if (v === PASS) {
+  const hash = await checkPassword(v);
+  if (hash === ADMIN_HASH) {
     ADMIN_AUTH = true;
     renderAdminContent();
   } else {

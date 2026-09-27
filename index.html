@@ -1939,7 +1939,14 @@ Style: lazy drawing, amateur doodle, funny ugly portrait, cursed sketch, noteboo
 }
 </script>
 <script>
-var SK='pgv2',FK='pgfv2',GK='pgghv2',PASS='rdj2026';
+var SK='pgv2',FK='pgfv2',GK='pgghv2';
+// ADMIN PASSWORD — stored as SHA-256 hash (not plain text), same scheme as the main site
+var ADMIN_HASH='26f5f8b67b8a8cf17b2a2e43dc2dea57bfdd1cf27175260280308e356ea8e99d';
+async function checkPassword(input){
+  const enc=new TextEncoder().encode(input);
+  const buf=await crypto.subtle.digest('SHA-256',enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 const DEFAULT={categories:['Men','Women','Products','Design'],categoryEmojis:{Men:'👤',Women:'👩',Products:'📦',Design:'🎨'},prompts:[
 {id:'p1',title:'Urban Gentleman',category:'Men',imageUrl:'https://picsum.photos/seed/pg_ug/600/750',images:['https://picsum.photos/seed/pg_ug/600/750','https://picsum.photos/seed/pg_ug2/600/750','https://picsum.photos/seed/pg_ug3/600/750'],prompt:'Portrait of a sophisticated urban gentleman in a navy suit, city backdrop, golden hour, cinematic lighting, shallow depth of field --ar 4:5',tags:['portrait','fashion'],createdAt:'2024-02-10',copyCount:47},
 {id:'p2',title:'Ethereal Feminine Grace',category:'Women',imageUrl:'https://picsum.photos/seed/pg_wm/600/750',images:['https://picsum.photos/seed/pg_wm/600/750','https://picsum.photos/seed/pg_wm2/600/750','https://picsum.photos/seed/pg_wm3/600/750'],prompt:'Ethereal portrait of a graceful woman with flowing silk dress, soft petals, morning light, dreamy soft focus --ar 4:5',tags:['portrait','ethereal'],createdAt:'2024-02-15',copyCount:62},
@@ -2018,7 +2025,7 @@ function init(){ADMIN_AUTH=false;load();loadTheme();renderSidebar();renderCatTab
 document.addEventListener('DOMContentLoaded',()=>{init();setTimeout(renderSidebarFavCount,60);});
 </script>
 <!-- Admin panel: lives in its own file. Loaded after the main script so the
-     global state declared above (DATA, FAVS, GH, PASS, renderGallery, …)
+     global state declared above (DATA, FAVS, GH, ADMIN_HASH, renderGallery, …)
      is available to it. No admin markup or code is in this HTML file. -->
 <script src="admin.js"></script>
 

@@ -1,6 +1,4 @@
 # robots.txt for rdjpublishers.com/Prompt-Gallery/
-# Public gallery: allowed. Admin file: blocked (unguessable name).
 
 User-agent: *
 Allow: /
-Disallow: /Prompt-Gallery/admin-a8f3k9q2.html

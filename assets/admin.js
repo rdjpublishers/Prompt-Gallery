@@ -839,3 +839,20 @@ async function ghPush(){
     renderAdminContent();
   }
 }
+
+/* ---------- triple-click trigger wiring ----------
+   The trigger-dot is a small brand accent in the topbar (no "Admin"
+   label, no admin-* class — the public source is admin-free).
+   This file attaches the triple-click handler so the dot in index.html
+   is just a neutral element. */
+(function(){
+  const adminDot = document.querySelector('.trigger-dot');
+  if (adminDot) adminDot.addEventListener('click', openAdminEntry);
+  document.body.addEventListener('keydown', function(e){
+    // Hidden keyboard shortcut: Ctrl+Shift+A opens the admin panel
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      openAdminEntry();
+    }
+  });
+})();

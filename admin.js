@@ -14,7 +14,7 @@
    has already defined the following globals (declared with `var` so they
    land on `window`):
      DATA, FAVS, CAT, SORT, QUERY, CURRENT_LB,
-     GH, SK, FK, GK, ADMIN_HASH, checkPassword,
+     GH, SK, FK, GK,
      ea, esc, uid,
      save, saveGH,
      renderGallery, renderSidebar, renderCatTabs, renderFavs.
@@ -22,6 +22,14 @@
    Admin-only state below is declared with `var` for the same reason — so
    `index.html`'s `init()` can reset `ADMIN_AUTH` to false on every load.
    ========================================================================= */
+
+/* ---------- admin password — stored as SHA-256 hash (not plain text) ---------- */
+var ADMIN_HASH = '26f5f8b67b8a8cf17b2a2e43dc2dea57bfdd1cf27175260280308e356ea8e99d';
+async function checkPassword(input){
+  const enc = new TextEncoder().encode(input);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 /* ---------- admin-only state (globals via `var`) ---------- */
 var ADMIN_AUTH          = false;
